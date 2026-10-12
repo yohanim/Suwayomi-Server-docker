@@ -98,6 +98,9 @@ There are a number of environment variables available to configure Suwayomi:
 |            **KCEF_ENABLED**             |                 `true`                 |                                                                                          Enable the WebView via CEF (Chromium).                                                                                          |
 
 
+### Memory
+To keep the server's native memory from growing over time, the image sets `MALLOC_ARENA_MAX=2` and `JDK_JAVA_OPTIONS=-XX:TrimNativeHeapInterval=60000` (the JVM gives freed native memory back to the system every minute). Redefine either variable to change it. Other Java options, like a maximum heap size, can be passed with `JAVA_TOOL_OPTIONS`, for example `JAVA_TOOL_OPTIONS=-Xmx1g`.
+
 > [!CAUTION]
 > This docker image is known to occasionally fail to work. This seems to be caused by problems in the download. If the logs simply end with `LD_PRELOAD=/opt/catch_abort.so /home/suwayomi/.local/share/Tachidesk/bin/kcef/libcef.so`, please remove the downloaded image and pull again. If this does not help, open a [new issue](https://github.com/Suwayomi/Suwayomi-Server-docker/issues/new).
 

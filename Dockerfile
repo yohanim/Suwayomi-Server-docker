@@ -92,6 +92,11 @@ LABEL maintainer="suwayomi" \
       org.opencontainers.image.licenses="MPL-2.0"
 
 ENV HOME=/home/suwayomi
+# Memory freed by the JDK's native code (image decoding, zlib) otherwise stays in glibc's per-thread arenas and the
+# server's memory keeps growing: limit the arenas, and have the JVM give freed native memory back every minute.
+# JDK_JAVA_OPTIONS takes precedence over JAVA_TOOL_OPTIONS, so redefine it to change this.
+ENV MALLOC_ARENA_MAX=2 \
+    JDK_JAVA_OPTIONS="-XX:TrimNativeHeapInterval=60000"
 WORKDIR /home/suwayomi
 USER suwayomi
 EXPOSE 4567
